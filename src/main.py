@@ -1,5 +1,5 @@
 from textnode import TextNode, TextType
-from htmlnode import HTMLNode, LeafNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
 def main():
     tst = TextNode("This is some anchor text",TextType.LINK,"https://www.boot.dev")
@@ -17,6 +17,19 @@ def main():
 
     tst4 = LeafNode("a", "Click me!", {"href": "https://www.google.com"})
     print(tst4.to_html())
+
+    tst5 = ParentNode(
+    "p",
+    [
+        LeafNode("b", "Bold text"),
+        LeafNode(None, "Normal text"),
+        LeafNode("i", "italic text"),
+        LeafNode(None, "Normal text"),
+    ],
+)
+
+    print(tst5.to_html())
+
 
 if __name__ == "__main__":
     main()
