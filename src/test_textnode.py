@@ -28,5 +28,9 @@ class TestTextNode(unittest.TestCase):
         node2 = TextNode("This is a text node", TextType.ITALIC)
         self.assertNotEqual(node, node2)
 
+    def test_text_bad_type(self):
+        with self.assertRaises(AttributeError):
+          TextNode("This is a text node", TextType.BREAK)
+
 if __name__ == "__main__":
     unittest.main()
