@@ -1,7 +1,10 @@
 from textnode import TextNode, TextType
 from htmlnode import HTMLNode, LeafNode, ParentNode
+from utilities import split_nodes_delimiter
 
 def main():
+
+    '''
     tst = TextNode("This is some anchor text",TextType.LINK,"https://www.boot.dev")
     print(tst.__repr__())
     tst_prop = {
@@ -29,25 +32,12 @@ def main():
 )
 
     print(tst5.to_html())
+    '''
 
-def text_node_to_html_node(textnode):
-    match textnode.text_type:
-        case(TextType.TEXT):
-            return LeafNode(None,textnode.text)
-        case(TextType.BOLD):
-            return LeafNode("b", textnode.text)
-        case(TextType.ITALIC):
-            return LeafNode("i", textnode.text)
-        case(TextType.NORMAL):
-            return LeafNode(None, textnode.text)
-        case(TextType.CODE):
-            return LeafNode("code", textnode.text)
-        case(TextType.LINK):
-            return LeafNode("a", textnode.text,{"href":textnode.url})
-        case(TextType.IMAGE):
-            return LeafNode("img", "",{"src":textnode.url,"alt":textnode.text})
-        case _:
-            raise TypeError(f"Unsupported TextNode Type: {textnode.text_type}")
+    tst_splitter_node = TextNode("This is text with a `code block` word", TextType.TEXT)
+    new_nodes = split_nodes_delimiter([tst_splitter_node], "`", TextType.CODE)
+
+
 
 
 
