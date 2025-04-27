@@ -1,3 +1,5 @@
+import re
+
 from textnode import TextNode, TextType
 from htmlnode import HTMLNode, LeafNode, ParentNode
 
@@ -55,7 +57,11 @@ def text_node_to_html_node(textnode):
         case _:
             raise TypeError(f"Unsupported TextNode Type: {textnode.text_type}")
 
+def extract_markdown_images(text):
+    return re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)",text)
 
+def extract_markdown_links(text):
+    return re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)",text)
 
 
 
