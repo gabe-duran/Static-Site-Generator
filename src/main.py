@@ -1,6 +1,6 @@
 from textnode import TextNode, TextType
 from htmlnode import HTMLNode, LeafNode, ParentNode
-from utilities import split_nodes_delimiter, split_nodes_link, split_nodes_image
+from utilities import split_nodes_delimiter, split_nodes_link, split_nodes_image,markdown_to_blocks
 
 def main():
 
@@ -36,7 +36,7 @@ def main():
 
     tst_splitter_node = TextNode("This is text with a `code block` word", TextType.TEXT)
     new_nodes = split_nodes_delimiter([tst_splitter_node], "`", TextType.CODE)
-    '''
+
 
     node = TextNode(
         "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
@@ -44,8 +44,18 @@ def main():
     )
 
     print(split_nodes_image([node]))
+    '''
+    md = """
+    This is **bolded** paragraph
 
+    This is another paragraph with _italic_ text and `code` here
+    This is the same paragraph on a new line
 
+    - This is a list
+    - with items
+    """
+    blocks = markdown_to_blocks(md)
+    print(blocks)
 
 if __name__ == "__main__":
     main()

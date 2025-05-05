@@ -121,6 +121,12 @@ def text_to_textnodes(text):
     italic_processed = split_nodes_delimiter(code_processed,"_", "Italic")
 
     return italic_processed
+'''
+def markdown_to_blocks(markdown):
+    split_markdown = list(map(lambda x: x.strip(), markdown.split("\n\n")))
+    return split_markdown
+'''
 
-
-
+def markdown_to_blocks(markdown):
+    blocks = re.split(r'\n\s*\n', markdown.strip())
+    return [block.strip() for block in blocks if block.strip()]
