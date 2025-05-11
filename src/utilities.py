@@ -2,6 +2,7 @@ import re
 
 from textnode import TextNode, TextType
 from htmlnode import HTMLNode, LeafNode, ParentNode
+from blocktypes import BlockType, block_to_block_type
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
@@ -125,3 +126,56 @@ def text_to_textnodes(text):
 def markdown_to_blocks(markdown):
     blocks = re.split(r'\n\s*\n', markdown.strip())
     return [block.strip() for block in blocks if block.strip()]
+
+
+def text_to_children(block):
+    return  list(map(text_node_to_html_node, text_to_textnodes(block.replace("\n", " "))))
+
+def list_to_lines(block):
+    lines = block.strip().split("\n")
+    nodes = []
+
+    for line in lines:
+        clean = re.sub(r"^(- +|\d+\. +)", "", line).strip()
+        children = text_to_children(clean)
+        nodes.append(ParentNode("li", children))
+    return nodes
+
+def quote_to_lines(block):
+    lines = block.strip().split("\n")
+    cleaned = []
+
+    for line in lines:
+        clean = re.sub(r"^(>)", "", line).strip()
+        cleaned.append(clean)
+
+    children = text_to_children(" ".join(cleaned))
+
+    return children
+
+def markdown_to_html_node(markdown):
+    blocks = markdown_to_blocks(markdown)
+    parent_blocks = []
+
+    for block in blocks:
+        block_type = block_to_block_type(block)
+        match(block_type):
+            case(BlockType.PARAGRAPH):
+                 parent_blocks.append(ParentNode("p",text_to_children(block),None))
+            case(BlockType.QUOTE):
+                 parent_blocks.append(ParentNode("blockquote",quote_to_lines(block),None))
+            case(BlockType.UNORDERED_LIST):
+                 parent_blocks.append(ParentNode("ul",list_to_lines(block),None))
+            case(BlockType.ORDERED_LIST):
+                 parent_blocks.append(ParentNode("ol",list_to_lines(block),None))
+            case(BlockType.CODE):
+                code_content = block[4:-3]
+                text_node = TextNode(code_content, TextType.CODE)
+                html_node = text_node_to_html_node(text_node)
+                parent_blocks.append(ParentNode("pre",[html_node],None))
+            case(BlockType.HEADING):
+                 match = re.match(r"^(#{1,6}) +(.*?)$", block)
+                 level = len(match.group(1))
+                 parent_blocks.append(ParentNode(f"h{level}",text_to_children(block[level+1:]),None))
+
+    return ParentNode("div", parent_blocks, None)

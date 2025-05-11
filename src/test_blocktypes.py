@@ -12,7 +12,7 @@ class TestBlockTypes(unittest.TestCase):
         self.assertEqual(block_to_block_type("###### Heading 6"), BlockType.HEADING)
 
     def test_block_to_block_type_code(self):
-        block = f"'''this is a code block.\nThis is another line in the code block'''"
+        block = f"```this is a code block.\nThis is another line in the code block```"
         self.assertEqual(block_to_block_type(block), BlockType.CODE)
 
     def test_block_to_block_type_quote(self):

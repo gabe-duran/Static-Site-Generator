@@ -13,7 +13,7 @@ class BlockType(Enum):
 def block_to_block_type(block):
     if re.match(r"^#{1,6} (.*?)$", block):
         return BlockType.HEADING
-    if re.match(r"^'''(.*?)'''$", block, re.DOTALL):
+    if re.match(r"^```(.*?)```$", block, re.DOTALL):
         return BlockType.CODE
     if re.match(r"^(?:>.*(?:\n|$))+", block, re.MULTILINE):
         return BlockType.QUOTE

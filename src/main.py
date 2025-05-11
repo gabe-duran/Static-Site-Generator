@@ -1,6 +1,16 @@
 from textnode import TextNode, TextType
 from htmlnode import HTMLNode, LeafNode, ParentNode
-from utilities import split_nodes_delimiter, split_nodes_link, split_nodes_image,markdown_to_blocks
+from utilities import (
+    text_node_to_html_node,
+    split_nodes_delimiter,
+    extract_markdown_images,
+    extract_markdown_links,
+    split_nodes_image,
+    split_nodes_link,
+    text_to_textnodes,
+    markdown_to_blocks,
+    markdown_to_html_node
+)
 
 def main():
 
@@ -44,7 +54,7 @@ def main():
     )
 
     print(split_nodes_image([node]))
-    '''
+
     md = """
     This is **bolded** paragraph
 
@@ -56,6 +66,19 @@ def main():
     """
     blocks = markdown_to_blocks(md)
     print(blocks)
+'''
+
+    markdown = """ 
+    This is **bolded** paragraph
+text in a p
+tag here
+
+This is another paragraph with _italic_ text and `code` here
+
+"""
+    md_blocks = markdown_to_html_node(markdown)
+    #print(f"from main: {md_blocks}")
+    print(md_blocks.to_html())
 
 if __name__ == "__main__":
     main()
