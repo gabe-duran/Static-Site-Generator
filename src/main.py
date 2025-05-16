@@ -1,3 +1,5 @@
+import os
+import shutil
 from textnode import TextNode, TextType
 from htmlnode import HTMLNode, LeafNode, ParentNode
 from utilities import (
@@ -66,7 +68,7 @@ def main():
     """
     blocks = markdown_to_blocks(md)
     print(blocks)
-'''
+
 
     markdown = """ 
     This is **bolded** paragraph
@@ -79,6 +81,51 @@ This is another paragraph with _italic_ text and `code` here
     md_blocks = markdown_to_html_node(markdown)
     #print(f"from main: {md_blocks}")
     print(md_blocks.to_html())
+'''
+
+    source = "./static/"
+    target = "./public/"
+
+    copytree(source, target)
+
+
+def copytree(source, target):
+
+    source = os.path.abspath(source)
+    target = os.path.abspath(target)
+
+
+    if os.path.exists(target):
+        shutil.rmtree(target)
+
+    os.mkdir(target)
+    log_path = os.path.join(target, "copy_log.txt")
+
+    with open(log_path, "w") as log:
+        _copy_contents_with_log(source, target, log)
+
+    print(f"Copied '{source}' → '{target}'")
+    print(f"Log written to: {log_path}")
+
+
+def _copy_contents_with_log(source, target, log):
+
+    for entry in os.listdir(source):
+        src_path = os.path.join(source, entry)
+        tgt_path = os.path.join(target, entry)
+
+        if os.path.isfile(src_path):
+            shutil.copy(src_path, tgt_path)
+            log.write(f"Copied: {src_path} → {tgt_path}\n")
+        else:
+            os.mkdir(tgt_path)
+            _copy_contents_with_log(src_path, tgt_path, log)
+
+
+
+
+
+
 
 if __name__ == "__main__":
     main()
