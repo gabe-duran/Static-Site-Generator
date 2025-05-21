@@ -179,3 +179,12 @@ def markdown_to_html_node(markdown):
                  parent_blocks.append(ParentNode(f"h{level}",text_to_children(block[level+1:]),None))
 
     return ParentNode("div", parent_blocks, None)
+
+def extract_title(markdown):
+    lines = markdown.split("\n")
+
+    for line in lines:
+        if line.startswith("# "):
+            return line[2:]
+
+    raise Exception("Markdown file missing title")

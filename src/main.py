@@ -11,7 +11,8 @@ from utilities import (
     split_nodes_link,
     text_to_textnodes,
     markdown_to_blocks,
-    markdown_to_html_node
+    markdown_to_html_node,
+    extract_title
 )
 
 def main():
@@ -81,12 +82,34 @@ This is another paragraph with _italic_ text and `code` here
     md_blocks = markdown_to_html_node(markdown)
     #print(f"from main: {md_blocks}")
     print(md_blocks.to_html())
-'''
+
 
     source = "./static/"
     target = "./public/"
 
     copytree(source, target)
+
+
+    path = os.path.join("content", "index.md")
+
+    with open(path) as f:
+        file_contents = f.read()
+
+    print(extract_title(file_contents))
+
+
+    generate_page("content","./","./test")
+'''
+
+    source = os.path.join("static")
+    target = os.path.join("public")
+
+    copytree(source, target)
+
+    frm = os.path.join("content", "index.md")
+    to = os.path.join("public", "index.html")
+    template = os.path.join("template.html")
+    generate_page(frm, template, to)
 
 
 def copytree(source, target):
@@ -121,11 +144,26 @@ def _copy_contents_with_log(source, target, log):
             os.mkdir(tgt_path)
             _copy_contents_with_log(src_path, tgt_path, log)
 
+def generate_page(from_path, template_path, dest_path):
+    md_file = os.path.join(from_path)
+    t_file = os.path.join(template_path)
+    d_path = os.path.join(dest_path)
 
+    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
+    with open(md_file) as md:
+        markdown = md.read()
 
+    with open(t_file) as t:
+        template = t.read()
 
+    content = markdown_to_html_node(markdown).to_html()
+    title = extract_title(markdown)
 
-
+    template = template.replace("{{ Title }}", title).replace("{{ Content }}",content)
+    if not os.path.exists(os.path.dirname(dest_path)):
+        os.makedirs(os.path.dirname(dest_path))
+    with open(d_path, "w") as d:
+        d.write(template)
 
 if __name__ == "__main__":
     main()

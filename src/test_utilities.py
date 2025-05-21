@@ -9,7 +9,8 @@ from utilities import (
     split_nodes_link,
     text_to_textnodes,
     markdown_to_blocks,
-    markdown_to_html_node
+    markdown_to_html_node,
+    extract_title
 )
 from textnode import TextNode, TextType
 
@@ -388,4 +389,26 @@ the **same** even with inline stuff
         self.assertEqual(
             html,
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
+        )
+
+class TestExtract_title(unittest.TestCase):
+    def test_simple_title(self):
+        md = """
+# This is the Title
+
+This is paragraph text.
+
+This is another paragraph.
+        
+"""
+        self.assertEqual(
+            extract_title(md),
+            "This is the Title",
+        )
+
+    def test_one_line(self):
+
+        self.assertEqual(
+            extract_title("# Hello"),
+            "Hello",
         )
