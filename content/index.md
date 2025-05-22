@@ -20,7 +20,15 @@ Here's the deal, **I like Tolkien**.
 - It can be enjoyed by children and adults alike
 - Disney _didn't ruin it_ (okay, but Amazon might have)
 - It created an entirely new genre of fantasy
+# Contact the Author
 
+[< Back Home](/)
+
+Give me a call anytime to chat about Tolkien!
+
+`555-555-5555`
+
+**"Váya márië."**
 ## My favorite characters (in order)
 
 1. Gandalf
