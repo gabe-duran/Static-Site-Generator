@@ -101,15 +101,23 @@ This is another paragraph with _italic_ text and `code` here
     generate_page("content","./","./test")
 '''
 
+
     source = os.path.join("static")
     target = os.path.join("public")
 
+    print("Deleting public directory...")
+    if os.path.exists(target):
+        shutil.rmtree(target)
+
+    print("Copying static files to public directory...")
     copytree(source, target)
 
-    frm = os.path.join("content", "index.md")
-    to = os.path.join("public", "index.html")
+    frm = os.path.join("content")
+    to = os.path.join("public")
+
+    print("Generating pages...")
     template = os.path.join("template.html")
-    generate_page(frm, template, to)
+    generate_page_recursive(frm, template, to)
 
 
 def copytree(source, target):
@@ -164,6 +172,22 @@ def generate_page(from_path, template_path, dest_path):
         os.makedirs(os.path.dirname(dest_path))
     with open(d_path, "w") as d:
         d.write(template)
+
+def generate_page_recursive(dir_path_content, template_path, dest_dir_path):
+    if not os.path.exists(dest_dir_path):
+        os.mkdir(dest_dir_path)
+
+    for entry in os.listdir(dir_path_content):
+        dir_path = os.path.join(dir_path_content, entry)
+        dest_path = os.path.join(dest_dir_path, entry)
+        print(f"Copying {dir_path} to {dest_path}")
+
+        if os.path.isfile(dir_path):
+            dest_path = os.path.join(os.path.dirname(dest_path),"index.html")
+            generate_page(dir_path, template_path, dest_path)
+        else:
+            generate_page_recursive(dir_path, template_path, dest_path)
+
 
 if __name__ == "__main__":
     main()
