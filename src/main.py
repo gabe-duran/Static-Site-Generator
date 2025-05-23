@@ -1,4 +1,5 @@
 import os
+import sys
 import shutil
 from textnode import TextNode, TextType
 from htmlnode import HTMLNode, LeafNode, ParentNode
@@ -99,11 +100,13 @@ This is another paragraph with _italic_ text and `code` here
 
 
     generate_page("content","./","./test")
+
+"""
 '''
 
-
+    basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
     source = os.path.join("static")
-    target = os.path.join("public")
+    target = os.path.join("docs")
 
     print("Deleting public directory...")
     if os.path.exists(target):
@@ -113,11 +116,11 @@ This is another paragraph with _italic_ text and `code` here
     copytree(source, target)
 
     frm = os.path.join("content")
-    to = os.path.join("public")
+    to = os.path.join("docs")
 
     print("Generating pages...")
     template = os.path.join("template.html")
-    generate_page_recursive(frm, template, to)
+    generate_page_recursive(frm, template, to, basepath)
 
 
 def copytree(source, target):
@@ -152,7 +155,7 @@ def _copy_contents_with_log(source, target, log):
             os.mkdir(tgt_path)
             _copy_contents_with_log(src_path, tgt_path, log)
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     md_file = os.path.join(from_path)
     t_file = os.path.join(template_path)
     d_path = os.path.join(dest_path)
@@ -168,12 +171,14 @@ def generate_page(from_path, template_path, dest_path):
     title = extract_title(markdown)
 
     template = template.replace("{{ Title }}", title).replace("{{ Content }}",content)
+    template = template.replace('href="/',f'href="{basepath}')
+    template = template.replace('src="/',f'src="{basepath}')
     if not os.path.exists(os.path.dirname(dest_path)):
         os.makedirs(os.path.dirname(dest_path))
     with open(d_path, "w") as d:
         d.write(template)
 
-def generate_page_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_page_recursive(dir_path_content, template_path, dest_dir_path, basepath):
     if not os.path.exists(dest_dir_path):
         os.mkdir(dest_dir_path)
 
@@ -184,9 +189,9 @@ def generate_page_recursive(dir_path_content, template_path, dest_dir_path):
 
         if os.path.isfile(dir_path):
             dest_path = os.path.join(os.path.dirname(dest_path),"index.html")
-            generate_page(dir_path, template_path, dest_path)
+            generate_page(dir_path, template_path, dest_path, basepath)
         else:
-            generate_page_recursive(dir_path, template_path, dest_path)
+            generate_page_recursive(dir_path, template_path, dest_path,basepath)
 
 
 if __name__ == "__main__":

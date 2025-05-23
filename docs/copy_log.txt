@@ -1,0 +1,5 @@
+Copied: /home/g_duran/workspace/github.com/gabe-duran/Static-Site-Generator/static/images/rivendell.png → /home/g_duran/workspace/github.com/gabe-duran/Static-Site-Generator/docs/images/rivendell.png
+Copied: /home/g_duran/workspace/github.com/gabe-duran/Static-Site-Generator/static/images/tolkien.png → /home/g_duran/workspace/github.com/gabe-duran/Static-Site-Generator/docs/images/tolkien.png
+Copied: /home/g_duran/workspace/github.com/gabe-duran/Static-Site-Generator/static/images/tom.png → /home/g_duran/workspace/github.com/gabe-duran/Static-Site-Generator/docs/images/tom.png
+Copied: /home/g_duran/workspace/github.com/gabe-duran/Static-Site-Generator/static/images/glorfindel.png → /home/g_duran/workspace/github.com/gabe-duran/Static-Site-Generator/docs/images/glorfindel.png
+Copied: /home/g_duran/workspace/github.com/gabe-duran/Static-Site-Generator/static/index.css → /home/g_duran/workspace/github.com/gabe-duran/Static-Site-Generator/docs/index.css
